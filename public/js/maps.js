@@ -23,10 +23,14 @@
         }
         opts.position = new google.maps.LatLng(location[0], location[1]);
         opts.map = map;
-        var marker = new google.maps.Marker(opts);
         if(!ourMarkers[day]) ourMarkers[day] = {};
+        if(ourMarkers[day][name]){
+        return true;
+       }
+        var marker = new google.maps.Marker(opts);
         ourMarkers[day][name] = [marker,type];
         console.log(ourMarkers)
+        return false;
     }
 
 $(document).ready(function() {

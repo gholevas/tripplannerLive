@@ -1,11 +1,11 @@
 $('#upperPanel').on('click', 'button', function() {
     if ($(this).attr('id') == 'hotelButton') {
+    	var repeat;
     	var hotelName = $(this)[0].previousElementSibling.value;
-        $('#hotelList').append('<div class="itinerary-item hotelItem"><span class="title">' + hotelName + '</span><button class="btn btn-xs btn-danger remove btn-circle">x</button></div>');
         hotels.forEach(function(element){
         	if(element.name === hotelName) {
         			var hotelLocation = [element.place[0].location[0], element.place[0].location[1]];
-        			drawLocation(hotelLocation, {
+        			repeat = drawLocation(hotelLocation, {
        					icon: '/images/lodging_0star.png'
     				},
     				hotelName,
@@ -14,14 +14,15 @@ $('#upperPanel').on('click', 'button', function() {
     				);
         		}
         });
+        if(!repeat) $('#hotelList').append('<div class="itinerary-item hotelItem"><span class="title">' + hotelName + '</span><button class="btn btn-xs btn-danger remove btn-circle">x</button></div>');
 
     } else if ($(this).attr('id') == 'restaurantButton') {
+    	var repeat;
     	var restaurantName = $(this)[0].previousElementSibling.value;
-        $('#restaurantList').append('<div class="itinerary-item restaurantItem"><span class="title">' + restaurantName + '</span><button class="btn btn-xs btn-danger remove btn-circle">x</button></div>');
 	    restaurants.forEach(function(element){
         	if(element.name === restaurantName) {
         			var restaurantLocation = [element.place[0].location[0], element.place[0].location[1]];
-        			drawLocation(restaurantLocation, {
+        			repeat = drawLocation(restaurantLocation, {
        					icon: '/images/restaurant.png'
     				},
     				restaurantName,
@@ -30,14 +31,17 @@ $('#upperPanel').on('click', 'button', function() {
     			);
         		}
         });
+        if(!repeat){
+      	  $('#restaurantList').append('<div class="itinerary-item restaurantItem"><span class="title">' + restaurantName + '</span><button class="btn btn-xs btn-danger remove btn-circle">x</button></div>');
+        }
 
     } else if ($(this).attr('id') == 'activityButton') {
+        var repeat;
         var activityName = $(this)[0].previousElementSibling.value;
-        $('#activityList').append('<div class="itinerary-item activityItem"><span class="title">' + activityName + '</span><button class="btn btn-xs btn-danger remove btn-circle">x</button></div>');
     	activities.forEach(function(element){
         	if(element.name === activityName) {
         			var activityLocation = [element.place[0].location[0], element.place[0].location[1]];
-        			drawLocation(activityLocation, {
+        			repeat = drawLocation(activityLocation, {
        					icon: '/images/star-3.png'
     				},
     				activityName,
@@ -47,16 +51,18 @@ $('#upperPanel').on('click', 'button', function() {
         		)}
         	
         });
+        if(!repeat){
+	        $('#activityList').append('<div class="itinerary-item activityItem"><span class="title">' + activityName + '</span><button class="btn btn-xs btn-danger remove btn-circle">x</button></div>');
+        }
     }
 });
 
 $('#lowerPanel').on('click', 'button', function() {
+	var self = this;
 	var thisname = $(this)[0].previousElementSibling.innerText;
 	var today = $('#day-title').data("day") || 1;
-	 ourMarkers[today][thisname][0].setMap(null);
-     delete ourMarkers[today][thisname];
-    
-	 $(this)[0].parentElement.remove()
+     deleteThing(today, thisname);
+	 $(self)[0].parentElement.remove()
 });
 
 $('.day-buttons').on('click','.day-btn' ,function() {
@@ -88,6 +94,24 @@ $('.day-buttons').on('click','.day-btn' ,function() {
 	})
 
 
+});
+
+function deleteThing(day,name){
+	ourMarkers[day][name][0].setMap(null);
+	delete ourMarkers[day][name];
+}
+
+function deleteDay(day){
+	for(var key in ourMarkers[day]){
+		deleteThing(day,key);
+	}
+}
+
+$('#deleteDay').on('click', function() {
+	var today = $('#day-title').data("day") || 1;
+	deleteDay(today);
+	ourMarkers.splice(today, 1);
+	$(".day-btn:last").remove();
 });
 
 $('#addDay').on('click', function() {
