@@ -92,8 +92,6 @@ $('.day-buttons').on('click','.day-btn' ,function() {
 			}
 		}
 	})
-
-
 });
 
 function deleteThing(day,name){
