@@ -65,17 +65,32 @@ $('#lowerPanel').on('click', 'button', function() {
 	 $(self)[0].parentElement.remove()
 });
 
+function dayOn(day){
+    for(var name in ourMarkers[day]){
+        ourMarkers[day][name][0].setMap(map);
+    }
+}
+
+function dayOff(day){
+    for(var name in ourMarkers[day]){
+        ourMarkers[day][name][0].setMap(null);
+    }
+}
+
 $('.day-buttons').on('click','.day-btn' ,function() {
+    var prevDay = $('#day-title').data("day") || 1;
 	var today = +$(this)[0].innerText;
-	$('#day-title').html('Day '+today+' ')
-	$('#day-title').data("day", +today);
-	$('#lowerPanel >> .list-group').each(function(index,element){
-		element.innerHTML = '';
-		console.log(index);
-		if(index === 0) {
-			for(var key in ourMarkers[today]){
-				if(ourMarkers[today][key][1] === "hotel"){
-				$(this).append('<div class="itinerary-item hotelItem"><span class="title">' + key + '</span><button class="btn btn-xs btn-danger remove btn-circle">x</button></div>');
+    $('#day-title').html('Day '+today+' ');
+    $('#day-title').data("day", +today);
+    dayOff(prevDay);
+    dayOn(today);
+    $('#lowerPanel >> .list-group').each(function(index,element){
+        element.innerHTML = '';
+        console.log(index);
+        if(index === 0) {
+            for(var key in ourMarkers[today]){
+                if(ourMarkers[today][key][1] === "hotel"){
+                $(this).append('<div class="itinerary-item hotelItem"><span class="title">' + key + '</span><button class="btn btn-xs btn-danger remove btn-circle">x</button></div>');
 				}
 			}
 		}else if(index === 1) {
