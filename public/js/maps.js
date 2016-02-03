@@ -16,15 +16,17 @@
 
 
     // draw some locations on the map
-    var ourMarkers = {};
-    function drawLocation(location, opts, name) {
+    var ourMarkers = [];
+    function drawLocation(location, opts, name,day,type) {
         if (typeof opts !== 'object') {
             opts = {};
         }
         opts.position = new google.maps.LatLng(location[0], location[1]);
         opts.map = map;
         var marker = new google.maps.Marker(opts);
-        ourMarkers[name] = marker;
+        if(!ourMarkers[day]) ourMarkers[day] = {};
+        ourMarkers[day][name] = [marker,type];
+        console.log(ourMarkers)
     }
 
 $(document).ready(function() {

@@ -8,7 +8,9 @@ $('#upperPanel').on('click', 'button', function() {
         			drawLocation(hotelLocation, {
        					icon: '/images/lodging_0star.png'
     				},
-    				hotelName
+    				hotelName,
+    				$('#day-title').data("day") || 1,
+    				'hotel'
     				);
         		}
         });
@@ -22,7 +24,10 @@ $('#upperPanel').on('click', 'button', function() {
         			drawLocation(restaurantLocation, {
        					icon: '/images/restaurant.png'
     				},
-    				restaurantName);
+    				restaurantName,
+    				$('#day-title').data("day") || 1,
+    				'restaurant'
+    			);
         		}
         });
 
@@ -35,7 +40,10 @@ $('#upperPanel').on('click', 'button', function() {
         			drawLocation(activityLocation, {
        					icon: '/images/star-3.png'
     				},
-    				activityName
+    				activityName,
+    				//console.log($('#day-title').data("day"))
+    				$('#day-title').data("day") || 1,
+    				'activity'
         		)}
         	
         });
@@ -44,8 +52,47 @@ $('#upperPanel').on('click', 'button', function() {
 
 $('#lowerPanel').on('click', 'button', function() {
 	var thisname = $(this)[0].previousElementSibling.innerText;
-	 ourMarkers[thisname].setMap(null);
-     delete ourMarkers[thisname];
+	var today = $('#day-title').data("day") || 1;
+	 ourMarkers[today][thisname][0].setMap(null);
+     delete ourMarkers[today][thisname];
     
 	 $(this)[0].parentElement.remove()
+});
+
+$('.day-buttons').on('click','.day-btn' ,function() {
+	var today = +$(this)[0].innerText;
+	$('#day-title').html('Day '+today+' ')
+	$('#day-title').data("day", +today);
+	$('#lowerPanel >> .list-group').each(function(index,element){
+		element.innerHTML = '';
+		console.log(index);
+		if(index === 0) {
+			for(var key in ourMarkers[today]){
+				if(ourMarkers[today][key][1] === "hotel"){
+				$(this).append('<div class="itinerary-item hotelItem"><span class="title">' + key + '</span><button class="btn btn-xs btn-danger remove btn-circle">x</button></div>');
+				}
+			}
+		}else if(index === 1) {
+			for(var key in ourMarkers[today]){
+				if(ourMarkers[today][key][1] === "restaurant"){
+				$(this).append('<div class="itinerary-item restaurantItem"><span class="title">' + key + '</span><button class="btn btn-xs btn-danger remove btn-circle">x</button></div>');
+				}
+			}
+		}else if(index === 2) {
+			for(var key in ourMarkers[today]){
+				if(ourMarkers[today][key][1] === "activity"){
+				$(this).append('<div class="itinerary-item activityItem"><span class="title">' + key + '</span><button class="btn btn-xs btn-danger remove btn-circle">x</button></div>');
+				}
+			}
+		}
+	})
+
+
+});
+
+$('#addDay').on('click', function() {
+	var num = (+$(this)[0].previousElementSibling.innerText)+1;
+	var $day = $('<button class="btn btn-circle day-btn">'+num+'</button>');
+	 $day.insertBefore($(this));
+	 ourMarkers[num] = {};
 });
