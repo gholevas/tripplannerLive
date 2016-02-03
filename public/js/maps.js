@@ -26,10 +26,6 @@
         var marker = new google.maps.Marker(opts);
         ourMarkers[name] = marker;
     }
-    
-    // ourMarkers.hotelname.setMap(null)
-    // delete ourMarkers.hotelname
-
 
 $(document).ready(function() {
   //  initialize_gmaps();

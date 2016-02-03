@@ -50,7 +50,7 @@
           <button class="btn btn-xs btn-danger remove btn-circle">x</button>
         </span>
       </h3>
-      
+
       <div id = "lowerPanel" class="panel panel-default">
         <div class="panel-heading">
           <div class="day-buttons">
@@ -110,6 +110,7 @@
   var hotels = {{ all_hotels | json }};
   var restaurants = {{ all_restaurants | json }};
   var activities = {{ all_activities | json }};
+  // activities
   {% endautoescape %}
 
 </script>

@@ -35,18 +35,17 @@ $('#upperPanel').on('click', 'button', function() {
         			drawLocation(activityLocation, {
        					icon: '/images/star-3.png'
     				},
-    				activityName);
-        		}
+    				activityName
+        		)}
+        	
         });
     }
 });
 
 $('#lowerPanel').on('click', 'button', function() {
-	 // console.log($(this))
-	var thisname = $(this)[0].previousElementSibling.innerHTML;
+	var thisname = $(this)[0].previousElementSibling.innerText;
 	 ourMarkers[thisname].setMap(null);
      delete ourMarkers[thisname];
     
 	 $(this)[0].parentElement.remove()
-
 });
