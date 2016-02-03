@@ -100,4 +100,19 @@
     </div>
   </div>
 </div>
+
+  
+
+<script>
+  {% autoescape false %}
+  // note to instructors: next iteration, change `all_xyz` to `templateXyz`
+  var hotels = {{ all_hotels | json }};
+  var restaurants = {{ all_restaurants | json }};
+  var activities = {{ all_activities | json }};
+  {% endautoescape %}
+
+console.log(hotels[0].name);
+
+</script>
+
 {% endblock %}
